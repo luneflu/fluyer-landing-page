@@ -1,0 +1,104 @@
+---
+// src/components/AnimatedBackground.astro
+---
+
+<canvas id="animated-bg"></canvas>
+
+<style>
+  #animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    object-fit: cover;
+    opacity: 0;
+    animation: fadeIn 1.5s ease-out forwards;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  import * as StackBlur from "stackblur-canvas";
+
+  const SCALE = 0.05;
+  const CANVAS_BLOCK_SIZE = 200;
+  const CANVAS_BLUR_RADIUS = 300;
+
+  const PALETTE = [
+    [92, 92, 214],
+    [214, 92, 137],
+    [214, 137, 92],
+    [214, 92, 190],
+    [214, 92, 214],
+    [214, 92, 92],
+    [214, 92, 92],
+    [133, 92, 214],
+    [173, 92, 214],
+    [92, 173, 214],
+  ];
+
+  function getRandomColor() {
+    return PALETTE[Math.floor(Math.random() * PALETTE.length)];
+  }
+
+  const canvas = document.getElementById("animated-bg") as HTMLCanvasElement;
+  if (canvas) {
+    const ctx = canvas.getContext("2d", { alpha: false });
+
+    function draw() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      const scaledWidth = Math.max(1, Math.floor(width * SCALE));
+      const scaledHeight = Math.max(1, Math.floor(height * SCALE));
+      const blockSize = Math.max(1, Math.floor(CANVAS_BLOCK_SIZE * SCALE));
+      const blurRadius = Math.floor(CANVAS_BLUR_RADIUS * SCALE);
+
+      canvas.width = scaledWidth;
+      canvas.height = scaledHeight;
+
+      const cols = Math.ceil(scaledWidth / blockSize);
+      const rows = Math.ceil(scaledHeight / blockSize);
+
+      if (!ctx) return;
+
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const color = getRandomColor();
+          ctx.fillStyle = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+          ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+        }
+      }
+
+      if (blurRadius > 0) {
+        StackBlur.canvasRGB(
+          canvas,
+          0,
+          0,
+          scaledWidth,
+          scaledHeight,
+          blurRadius,
+        );
+      }
+    }
+
+    let resizeTimeout: ReturnType<typeof setTimeout>;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(draw, 200);
+    });
+
+    draw();
+  }
+</script>
