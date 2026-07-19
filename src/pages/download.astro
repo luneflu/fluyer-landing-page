@@ -320,7 +320,8 @@ makepkg -si</code></pre>
             if (isPreRelease) suffix = "(Pre-Release)";
             else if (isLatest) suffix = "(Latest)";
 
-            const label = `${release.name || release.tag_name} ${suffix}`.trim();
+            const label =
+              `${release.name || release.tag_name} ${suffix}`.trim();
             return { label, value: release.tag_name };
           });
 
@@ -336,7 +337,9 @@ makepkg -si</code></pre>
       if (versionSelect) {
         versionSelect.addEventListener("change", (e: any) => {
           const selectedValue = e.detail.value;
-          const release = releasesData.find((r) => r.tag_name === selectedValue);
+          const release = releasesData.find(
+            (r) => r.tag_name === selectedValue,
+          );
 
           if (release && release.body && changelogContainer) {
             changelogContainer.innerHTML = (window as any).marked.parse(
@@ -353,7 +356,9 @@ makepkg -si</code></pre>
               const patternStr = btn.getAttribute("data-dl-pattern");
               if (!patternStr) return;
               const pattern = new RegExp(patternStr);
-              const asset = release.assets.find((a: any) => pattern.test(a.name));
+              const asset = release.assets.find((a: any) =>
+                pattern.test(a.name),
+              );
               if (asset) {
                 btn.setAttribute("data-dl-url", asset.browser_download_url);
                 (btn as HTMLElement).style.opacity = "1";

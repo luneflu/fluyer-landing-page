@@ -5,56 +5,56 @@ import Navbar from "../components/Navbar.astro";
 import { ClientRouter } from "astro:transitions";
 
 interface Props {
-	title: string;
-	bodyClass?: string;
+  title: string;
+  bodyClass?: string;
 }
 
 const { title, bodyClass } = Astro.props;
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-		<ClientRouter />
-	</head>
-	<body class={bodyClass + " text-white"}>
-		<AnimatedBackground />
-		<div
-			id="page-content"
-			class="opacity-0 transition-opacity duration-1000 flex-1 flex flex-col min-h-0 w-full h-full contents-wrapper"
-		>
-			<Navbar />
-			<slot />
-		</div>
-		<script>
-			function initPageFade() {
-				const pageContent = document.getElementById("page-content");
-				const canvas = document.getElementById("animated-bg");
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body class={bodyClass + " text-white"}>
+    <AnimatedBackground />
+    <div
+      id="page-content"
+      class="opacity-0 transition-opacity duration-1000 flex-1 flex flex-col min-h-0 w-full h-full contents-wrapper"
+    >
+      <Navbar />
+      <slot />
+    </div>
+    <script>
+      function initPageFade() {
+        const pageContent = document.getElementById("page-content");
+        const canvas = document.getElementById("animated-bg");
 
-				const showPage = () => {
-					if (pageContent) {
-						pageContent.classList.remove("opacity-0");
-					}
-				};
+        const showPage = () => {
+          if (pageContent) {
+            pageContent.classList.remove("opacity-0");
+          }
+        };
 
-				// If canvas is already visible, show page immediately
-				if (canvas && !canvas.classList.contains("opacity-0")) {
-					showPage();
-				} else {
-					document.addEventListener("background-ready", showPage, {
-						once: true,
-					});
-					// Fallback
-					setTimeout(showPage, 1500);
-				}
-			}
+        // If canvas is already visible, show page immediately
+        if (canvas && !canvas.classList.contains("opacity-0")) {
+          showPage();
+        } else {
+          document.addEventListener("background-ready", showPage, {
+            once: true,
+          });
+          // Fallback
+          setTimeout(showPage, 1500);
+        }
+      }
 
-			document.addEventListener("astro:page-load", initPageFade);
-		</script>
-	</body>
+      document.addEventListener("astro:page-load", initPageFade);
+    </script>
+  </body>
 </html>

@@ -159,7 +159,10 @@ const defaultLabel = options.length > 0 ? options[0].label : "Select...";
       });
     }
 
-    setOptions(newOptions: { label: string; value: string }[], defaultValue?: string) {
+    setOptions(
+      newOptions: { label: string; value: string }[],
+      defaultValue?: string,
+    ) {
       if (!this.optionsContainer) {
         console.warn("optionsContainer not found in Select component!");
         return;
