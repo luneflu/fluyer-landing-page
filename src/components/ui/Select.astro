@@ -1,0 +1,201 @@
+---
+import type { GlassShineSize } from "../../types/glass";
+import Glass from "./glass/Glass.astro";
+
+interface Props {
+  class?: string;
+  style?: string;
+  glassEnableBlur?: boolean;
+  glassEnableHoverEffect?: boolean;
+  glassShineSize?: GlassShineSize;
+  options?: { label: string; value: string }[];
+  [key: string]: any;
+}
+
+const {
+  glassEnableBlur = false,
+  glassEnableHoverEffect = true,
+  glassShineSize = "md",
+  class: className = "",
+  style = "",
+  options = [],
+  id,
+  ...rest
+} = Astro.props;
+
+const defaultLabel = options.length > 0 ? options[0].label : "Select...";
+---
+
+<fluyer-select
+  id={id}
+  data-options={JSON.stringify(options)}
+  class="relative block"
+>
+  <Glass
+    class={`bg-gray-300/10 cursor-pointer select-none ${glassEnableHoverEffect ? "hover:bg-gray-200/20" : ""} ${className}`}
+    style={style}
+    enableBlur={glassEnableBlur}
+    shineSize={glassShineSize}
+    {...rest}
+  >
+    <div
+      class="selected-value w-full h-full px-4 py-2 text-white flex items-center justify-between gap-3"
+    >
+      <span class="truncate">{defaultLabel}</span>
+      <svg
+        class="fill-current h-4 w-4 shrink-0 transform transition-transform duration-200"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 20 20"
+      >
+        <path
+          d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+        ></path>
+      </svg>
+    </div>
+  </Glass>
+
+  <div
+    class="dropdown-menu absolute z-50 w-full mt-2 opacity-0 invisible translate-y-[-10px] transition-all duration-200"
+  >
+    <Glass
+      class="backdrop-blur-xl rounded-lg overflow-hidden py-1 shadow-2xl"
+      shineSize="sm"
+    >
+      {
+        options.map((option) => (
+          <div
+            class="option-item px-4 py-2 text-sm text-white/90 hover:text-white hover:bg-gray-200/20 cursor-pointer transition-colors"
+            data-value={option.value}
+            data-label={option.label}
+          >
+            {option.label}
+          </div>
+        ))
+      }
+    </Glass>
+  </div>
+</fluyer-select>
+
+<script>
+  class FluyerSelect extends HTMLElement {
+    private _isOpen = false;
+    private selectedValueEl: Element | null = null;
+    private arrowIcon: Element | null = null;
+    private dropdownMenu: Element | null = null;
+    private glassBtn: Element | null | undefined = null;
+    public optionsContainer: Element | null = null;
+
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      // Delay initialization slightly to ensure children are parsed
+      requestAnimationFrame(() => {
+        this.selectedValueEl = this.querySelector(".selected-value span");
+        this.arrowIcon = this.querySelector(".selected-value svg");
+        this.dropdownMenu = this.querySelector(".dropdown-menu");
+        this.glassBtn = this.querySelector(".selected-value")?.parentElement;
+        this.optionsContainer = this.querySelector(".dropdown-menu > div");
+
+        this.glassBtn?.addEventListener("click", (e) => {
+          e.stopPropagation();
+          this.toggleMenu();
+        });
+
+        this.attachOptionListeners();
+
+        document.addEventListener("click", (e) => {
+          if (!this.contains(e.target as Node)) {
+            this.toggleMenu(false);
+          }
+        });
+
+        // Dispatch an event to let the page know it's ready
+        this.dispatchEvent(
+          new CustomEvent("fluyer-select-ready", { bubbles: true }),
+        );
+      });
+    }
+
+    toggleMenu(show?: boolean) {
+      this._isOpen = show !== undefined ? show : !this._isOpen;
+      if (this._isOpen) {
+        this.dropdownMenu?.classList.remove(
+          "opacity-0",
+          "invisible",
+          "translate-y-[-10px]",
+        );
+        this.arrowIcon?.classList.add("rotate-180");
+      } else {
+        this.dropdownMenu?.classList.add(
+          "opacity-0",
+          "invisible",
+          "translate-y-[-10px]",
+        );
+        this.arrowIcon?.classList.remove("rotate-180");
+      }
+    }
+
+    attachOptionListeners() {
+      const options = this.querySelectorAll(".option-item");
+      options.forEach((option) => {
+        option.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const value = (option as HTMLElement).dataset.value;
+          const label = (option as HTMLElement).dataset.label;
+          if (this.selectedValueEl && label) {
+            this.selectedValueEl.textContent = label;
+          }
+          this.toggleMenu(false);
+
+          this.dispatchEvent(
+            new CustomEvent("change", {
+              detail: { value, label },
+              bubbles: true,
+            }),
+          );
+        });
+      });
+    }
+
+    setOptions(newOptions: { label: string; value: string }[], defaultValue?: string) {
+      if (!this.optionsContainer) {
+        console.warn("optionsContainer not found in Select component!");
+        return;
+      }
+
+      this.optionsContainer.innerHTML = "";
+
+      newOptions.forEach((option) => {
+        const div = document.createElement("div");
+        div.className =
+          "option-item px-4 py-2 text-sm text-white/90 hover:text-white hover:bg-gray-200/20 cursor-pointer transition-colors";
+        div.dataset.value = option.value;
+        div.dataset.label = option.label;
+        div.textContent = option.label;
+        this.optionsContainer?.appendChild(div);
+      });
+
+      this.attachOptionListeners();
+
+      const defaultOption = defaultValue
+        ? newOptions.find((o) => o.value === defaultValue) || newOptions[0]
+        : newOptions[0];
+
+      if (defaultOption && this.selectedValueEl) {
+        this.selectedValueEl.textContent = defaultOption.label;
+        this.dispatchEvent(
+          new CustomEvent("change", {
+            detail: { value: defaultOption.value, label: defaultOption.label },
+            bubbles: true,
+          }),
+        );
+      } else if (this.selectedValueEl) {
+        this.selectedValueEl.textContent = "Select...";
+      }
+    }
+  }
+
+  customElements.define("fluyer-select", FluyerSelect);
+</script>

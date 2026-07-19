@@ -2,91 +2,380 @@
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/ui/Button.astro";
 import View from "../components/ui/View.astro";
+import Select from "../components/ui/Select.astro";
+import DownloadSimple from "phosphor-astro/DownloadSimple.astro";
 ---
 
 <Layout title="Fluyer - Download">
-		<div class="w-screen h-screen flex flex-col items-center justify-center relative text-white pt-20">
-      <div class="flex flex-col items-center max-w-2xl">
-        
-        <div class="flex flex-wrap justify-center gap-3 mx-3">
-          <Button
-            class="flex items-center gap-2 px-4 py-2 rounded text-sm"
-            glassShineSize="sm"
-          >
-            <img
-              class="w-4 invert"
-              src="https://img.icons8.com/ios-filled/50/windows-11.png"
-            /> Windows
-          </Button>
-          <Button
-            class="flex items-center gap-2 px-4 py-2 rounded text-sm"
-            glassShineSize="sm"
-          >
-            <img
-              class="w-4 invert"
-              src="https://img.icons8.com/ios-filled/50/mac-os.png"
-            /> macOS
-          </Button>
-          <Button
-            class="flex items-center gap-2 px-4 py-2 rounded text-sm"
-            glassShineSize="sm"
-          >
-            <img
-              class="w-4 invert"
-              src="https://img.icons8.com/ios-filled/50/android-os.png"
-            /> Android
-          </Button>
-          <Button
-            class="flex items-center gap-2 px-4 py-2 rounded text-sm"
-            glassShineSize="sm"
-          >
-            <img
-              class="w-4 invert"
-              src="https://img.icons8.com/ios-filled/50/debian.png"
-            /> Debian
-          </Button>
-          <Button
-            id="arch-toggle"
-            class="flex items-center gap-2 px-4 py-2 rounded text-sm"
-            glassShineSize="sm"
-          >
-            <img
-              class="w-4 invert"
-              src="https://img.icons8.com/material/96/arch-linux.png"
-            /> Arch Linux
-          </Button>
-        </div>
-
-        <section
-          id="arch-docs"
-          class="w-full hidden mt-6 rounded-xl text-left max-w-md px-3"
+  <div
+    class="flex flex-col items-center justify-center relative text-white pt-20"
+  >
+    <div class="flex flex-col items-center max-w-2xl w-full">
+      <p class="text-4xl font-bold mb-6">Downloads</p>
+      <div class="flex flex-wrap justify-center gap-3 mx-3">
+        <Button
+          data-os="windows"
+          class="os-btn flex items-center gap-2 px-4 py-2 rounded text-sm"
+          glassShineSize="sm"
         >
-          <div>
-            <p class="text-sm text-white/90 mb-2">
-              If you have yay installed, install from AUR:
-            </p>
-            <View
-              class="p-3 rounded-lg text-sm font-mono mb-4 overflow-x-auto scrollbar-hidden"
-              ><pre><code>yay -S fluyer</code></pre></View
-            >
-
-            <p class="text-sm text-white/90 mb-2">
-              If you don't have yay installed:
-            </p>
-            <View
-              class="p-3 rounded-lg text-sm font-mono overflow-x-auto scrollbar-hidden"
-              ><pre><code>git clone https://aur.archlinux.org/fluyer.git
-cd fluyer
-makepkg -si</code></pre></View
-            >
-          </div>
-        </section>
+          <img
+            class="w-4 invert"
+            src="https://img.icons8.com/ios-filled/50/windows-11.png"
+          /> Windows
+        </Button>
+        <Button
+          data-os="macos"
+          class="os-btn flex items-center gap-2 px-4 py-2 rounded text-sm"
+          glassShineSize="sm"
+        >
+          <img
+            class="w-4 invert"
+            src="https://img.icons8.com/ios-filled/50/mac-os.png"
+          /> macOS
+        </Button>
+        <Button
+          data-os="android"
+          class="os-btn flex items-center gap-2 px-4 py-2 rounded text-sm"
+          glassShineSize="sm"
+        >
+          <img
+            class="w-4 invert"
+            src="https://img.icons8.com/ios-filled/50/android-os.png"
+          /> Android
+        </Button>
+        <Button
+          data-os="debian"
+          class="os-btn flex items-center gap-2 px-4 py-2 rounded text-sm"
+          glassShineSize="sm"
+        >
+          <img
+            class="w-4 invert"
+            src="https://img.icons8.com/ios-filled/50/debian.png"
+          /> Debian
+        </Button>
+        <Button
+          data-os="arch"
+          class="os-btn flex items-center gap-2 px-4 py-2 rounded text-sm"
+          glassShineSize="sm"
+        >
+          <img
+            class="w-4 invert"
+            src="https://img.icons8.com/material/96/arch-linux.png"
+          /> Arch Linux
+        </Button>
       </div>
-		</div>
 
-    <script>
-      const btn = document.getElementById("arch-toggle");
-      const docs = document.getElementById("arch-docs");
-      btn?.addEventListener("click", () => docs?.classList.toggle("hidden"));
-    </script>
+      <section
+        id="windows-section"
+        class="os-section hidden mt-8 w-full max-w-md px-3 flex-col gap-3"
+      >
+        <Button
+          class="flex px-6 py-3 rounded-lg text-sm w-full items-center dl-btn"
+          glassShineSize="sm"
+          data-dl-pattern="x64-setup.exe$"
+          ><DownloadSimple class="w-6 h-6" />
+          <span class="ms-2">Download.exe</span></Button
+        >
+        <p class="text-xs text-center text-white/70 mt-1">Windows 7 or later</p>
+      </section>
+
+      <section
+        id="macos-section"
+        class="os-section hidden mt-8 w-full max-w-md px-3 flex-col gap-3"
+      >
+        <Button
+          class="flex px-6 py-3 rounded-lg text-sm w-full items-center dl-btn"
+          glassShineSize="sm"
+          data-dl-pattern="aarch64.dmg$"
+          ><DownloadSimple class="w-6 h-6" />
+          <span class="ms-2">Apple Silicon</span></Button
+        >
+        <Button
+          class="flex px-6 py-3 rounded-lg text-sm w-full items-center dl-btn"
+          glassShineSize="sm"
+          data-dl-pattern="x64.dmg$"
+          ><DownloadSimple class="w-6 h-6" />
+          <span class="ms-2">Intel Chip</span></Button
+        >
+        <p class="text-xs text-center text-white/70 mt-1">
+          macOS Catalina (10.15) or later
+        </p>
+      </section>
+
+      <section
+        id="android-section"
+        class="os-section hidden mt-8 w-full max-w-md px-3 flex-col gap-3"
+      >
+        <Button
+          class="px-6 py-2 rounded-lg text-sm w-full flex flex-col items-center dl-btn"
+          glassShineSize="sm"
+          data-dl-pattern="aarch64.apk$"
+        >
+          <span class="font-medium">aarch64</span>
+          <span class="text-xs opacity-75">Most modern Android devices</span>
+        </Button>
+        <Button
+          class="px-6 py-2 rounded-lg text-sm w-full flex flex-col items-center dl-btn"
+          glassShineSize="sm"
+          data-dl-pattern="armv7.apk$"
+        >
+          <span class="font-medium">armv7</span>
+          <span class="text-xs opacity-75">Older 32-bit devices</span>
+        </Button>
+        <Button
+          class="px-6 py-2 rounded-lg text-sm w-full flex flex-col items-center dl-btn"
+          glassShineSize="sm"
+          data-dl-pattern="x86_64.apk$"
+        >
+          <span class="font-medium">x86_64</span>
+          <span class="text-xs opacity-75"
+            >Emulators, some tablets, and Chromebooks</span
+          >
+        </Button>
+        <Button
+          class="px-6 py-2 rounded-lg text-sm w-full flex flex-col items-center dl-btn"
+          glassShineSize="sm"
+          data-dl-pattern="i686.apk$"
+        >
+          <span class="font-medium">i686</span>
+          <span class="text-xs opacity-75">Older x86 devices</span>
+        </Button>
+        <p class="text-xs text-center text-white/70 mt-1">
+          Android 7.0 or later
+        </p>
+      </section>
+
+      <section
+        id="debian-section"
+        class="os-section hidden mt-8 w-full max-w-md px-3 flex-col gap-3"
+      >
+        <Button
+          class="flex px-6 py-3 rounded-lg text-sm w-full items-center dl-btn"
+          glassShineSize="sm"
+          data-dl-pattern="amd64.deb$"
+          ><DownloadSimple class="w-6 h-6" />
+          <span class="ms-2">Download.deb</span></Button
+        >
+        <p class="text-xs text-center text-white/70 mt-1">
+          Requires webkit2gtk
+        </p>
+      </section>
+
+      <section
+        id="arch-section"
+        class="os-section hidden mt-6 w-full rounded-xl text-left max-w-md px-3"
+      >
+        <div>
+          <p class="text-sm text-white/90 mb-2">
+            If you have yay installed, install from AUR:
+          </p>
+          <View
+            class="p-3 rounded-lg text-sm font-mono mb-4 overflow-x-auto scrollbar-hidden"
+          >
+            <pre><code>yay -S fluyer</code></pre>
+          </View>
+          <p class="text-sm text-white/90 mb-2">
+            If you don't have yay installed:
+          </p>
+          <View
+            class="p-3 rounded-lg text-sm font-mono overflow-x-auto scrollbar-hidden"
+          >
+            <pre><code>git clone https://aur.archlinux.org/fluyer.git
+cd fluyer
+makepkg -si</code></pre>
+          </View>
+          <p class="text-xs text-center text-white/70 mt-4">
+            Requires webkit2gtk.
+          </p>
+        </div>
+      </section>
+
+      <div class="mt-6 flex flex-col items-center w-full px-3">
+        <Select
+          id="version-select"
+          options={[{ label: "Loading versions...", value: "" }]}
+          class="text-sm rounded-lg min-w-[150px]"
+          glassShineSize="sm"
+        />
+
+        <View
+          id="changelog-container"
+          class="mt-6 w-full max-w-2xl text-left bg-white/5 rounded-xl p-6 hidden changelog-content"
+        />
+      </div>
+    </div>
+  </div>
+
+  <style is:global>
+    .changelog-content h1,
+    .changelog-content h2,
+    .changelog-content h3 {
+      font-weight: bold;
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+    }
+    .changelog-content h1 {
+      font-size: 1.5em;
+    }
+    .changelog-content h2 {
+      font-size: 1.25em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.3em;
+    }
+    .changelog-content p {
+      margin-bottom: 1em;
+    }
+    .changelog-content ul {
+      list-style-type: disc;
+      padding-left: 1.5em;
+      margin-bottom: 1em;
+    }
+    .changelog-content a {
+      color: #60a5fa;
+      text-decoration: underline;
+    }
+    .changelog-content code {
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 0.2em 0.4em;
+      border-radius: 0.25rem;
+      font-size: 0.9em;
+    }
+  </style>
+
+  <script is:inline src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
+  ></script>
+  <script>
+    document.addEventListener("astro:page-load", () => {
+      const btns = document.querySelectorAll(".os-btn");
+      const sections = document.querySelectorAll(".os-section");
+
+      btns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const target = btn.getAttribute("data-os");
+          sections.forEach((sec) => {
+            if (sec.id === target + "-section") {
+              sec.classList.remove("hidden");
+              sec.classList.add(target === "arch" ? "block" : "flex");
+            } else {
+              sec.classList.add("hidden");
+              sec.classList.remove("flex", "block");
+            }
+          });
+        });
+      });
+
+      // Version fetching and changelog handling
+      const versionSelect = document.getElementById("version-select") as any;
+      const changelogContainer = document.getElementById("changelog-container");
+      if (!versionSelect) return;
+
+      let releasesData: any[] = [];
+
+      async function updateSelect(options: any[], defaultValue?: string) {
+        if (!versionSelect) return;
+
+        // If component hasn't been upgraded or connectedCallback hasn't run yet
+        if (typeof versionSelect.setOptions !== "function") {
+          await customElements.whenDefined("fluyer-select");
+          // Wait tick for connectedCallback to finish
+          await new Promise((r) => setTimeout(r, 50));
+        }
+
+        if (typeof versionSelect.setOptions === "function") {
+          versionSelect.setOptions(options, defaultValue);
+        } else {
+          console.error("setOptions still not available on versionSelect");
+
+          // Final fallback: listen for ready event
+          versionSelect.addEventListener(
+            "fluyer-select-ready",
+            () => {
+              if (typeof versionSelect.setOptions === "function") {
+                versionSelect.setOptions(options, defaultValue);
+              }
+            },
+            { once: true },
+          );
+        }
+      }
+
+      async function fetchReleases() {
+        try {
+          console.log("Fetching releases");
+          const res = await fetch(
+            "https://api.github.com/repos/luneflu/Fluyer/releases",
+          );
+          if (!res.ok) throw new Error("Failed to fetch releases");
+
+          releasesData = await res.json();
+
+          const latestStable = releasesData.find((r) => !r.prerelease);
+          const defaultValue = latestStable ? latestStable.tag_name : undefined;
+
+          const options = releasesData.map((release) => {
+            const isPreRelease = release.prerelease;
+            const isLatest = release === latestStable;
+
+            let suffix = "";
+            if (isPreRelease) suffix = "(Pre-Release)";
+            else if (isLatest) suffix = "(Latest)";
+
+            const label = `${release.name || release.tag_name} ${suffix}`.trim();
+            return { label, value: release.tag_name };
+          });
+
+          await updateSelect(options, defaultValue);
+        } catch (err) {
+          console.error("Error fetching GitHub releases:", err);
+          await updateSelect([{ label: "Failed to load versions", value: "" }]);
+        }
+      }
+
+      const dlBtns = document.querySelectorAll(".dl-btn");
+
+      if (versionSelect) {
+        versionSelect.addEventListener("change", (e: any) => {
+          const selectedValue = e.detail.value;
+          const release = releasesData.find((r) => r.tag_name === selectedValue);
+
+          if (release && release.body && changelogContainer) {
+            changelogContainer.innerHTML = (window as any).marked.parse(
+              release.body,
+            );
+            changelogContainer.classList.remove("hidden");
+          } else if (changelogContainer) {
+            changelogContainer.innerHTML = "<p>No changelog available.</p>";
+            changelogContainer.classList.remove("hidden");
+          }
+
+          if (release && release.assets) {
+            dlBtns.forEach((btn) => {
+              const patternStr = btn.getAttribute("data-dl-pattern");
+              if (!patternStr) return;
+              const pattern = new RegExp(patternStr);
+              const asset = release.assets.find((a: any) => pattern.test(a.name));
+              if (asset) {
+                btn.setAttribute("data-dl-url", asset.browser_download_url);
+                (btn as HTMLElement).style.opacity = "1";
+                (btn as HTMLElement).style.pointerEvents = "auto";
+              } else {
+                btn.removeAttribute("data-dl-url");
+                (btn as HTMLElement).style.opacity = "0.5";
+                (btn as HTMLElement).style.pointerEvents = "none";
+              }
+            });
+          }
+        });
+      }
+
+      dlBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const url = btn.getAttribute("data-dl-url");
+          if (url) window.location.href = url;
+        });
+      });
+
+      fetchReleases();
+    });
+  </script>
 </Layout>
