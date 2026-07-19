@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import AnimatedBackground from "../components/AnimatedBackground.astro";
 import Navbar from "../components/Navbar.astro";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
 	title: string;
@@ -19,6 +20,7 @@ const { title, bodyClass } = Astro.props;
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+		<ClientRouter />
 	</head>
 	<body class={bodyClass + " text-white"}>
 		<AnimatedBackground />
