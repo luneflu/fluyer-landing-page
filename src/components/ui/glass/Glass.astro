@@ -1,0 +1,40 @@
+---
+import type { GlassShineSize } from "../../../types/glass";
+
+interface Props {
+  class?: string;
+  style?: string;
+  showShine?: boolean;
+  shineColor?: string;
+  showShadow?: boolean;
+  enableBlur?: boolean;
+  shineSize?: GlassShineSize;
+  [key: string]: any;
+}
+
+const {
+  class: className = "",
+  style = "",
+  shineColor = "rgba(255, 255, 255, 0.5)",
+  enableBlur = false,
+  shineSize = "md",
+  ...rest
+} = Astro.props;
+
+const getHoverClasses = () => {
+  return "transition-all duration-[400ms] ease-[cubic-bezier(0.175,0.885,0.32,2.2)]";
+};
+
+const getShineSize = () => {
+  if (shineSize === "sm") return "border-[1.5px] border-[var(--shine-color)]";
+  return "border-[2px] border-[var(--shine-color)]";
+};
+---
+
+<div
+  class={`${getHoverClasses()} ${getShineSize()} ${className}`}
+  style={`--shine-color: ${shineColor}; ${style}`}
+  {...rest}
+>
+  <slot />
+</div>

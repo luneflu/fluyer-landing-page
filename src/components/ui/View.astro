@@ -1,0 +1,32 @@
+---
+import type { GlassShineSize } from '../../types/glass';
+import Glass from './glass/Glass.astro';
+
+interface Props {
+  class?: string;
+  style?: string;
+  glassEnableBlur?: boolean;
+  glassEnableHoverEffect?: boolean;
+  glassShineSize?: GlassShineSize;
+  [key: string]: any;
+}
+
+const {
+  glassEnableBlur = false,
+  glassEnableHoverEffect = false,
+  glassShineSize = 'md',
+  class: className = '',
+  style = '',
+  ...rest
+} = Astro.props;
+---
+
+<Glass
+  class={`bg-gray-300/10 ${glassEnableHoverEffect ? 'hover:bg-gray-200/20' : ''} ${className}`}
+  style={style}
+  enableBlur={glassEnableBlur}
+  shineSize={glassShineSize}
+  {...rest}
+>
+  <slot />
+</Glass>

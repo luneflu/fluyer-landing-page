@@ -12,7 +12,10 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.1.1",
-    "stackblur-canvas": "^3.0.1"
+    "sharp": "^0.35.3",
+    "stackblur-canvas": "^3.0.1",
+    "tailwindcss": "^4.3.3"
   }
 }

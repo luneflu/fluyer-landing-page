@@ -1,0 +1,21 @@
+---
+import type { GlassShineSize } from "../../types/glass";
+import View from "./View.astro";
+
+interface Props {
+  class?: string;
+  glassShineSize?: GlassShineSize;
+  [key: string]: any;
+}
+
+const { class: className = "", glassShineSize, ...rest } = Astro.props;
+---
+
+<View
+  class={`cursor-pointer scale-100 active:scale-95 transition-transform ${className}`}
+  glassShineSize={glassShineSize}
+  glassEnableHoverEffect={true}
+  {...rest}
+>
+  <slot />
+</View>
