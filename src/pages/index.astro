@@ -4,39 +4,12 @@ import Hero from "../components/Hero.astro";
 ---
 
 <Layout title="Fluyer" bodyClass="h-screen flex flex-col">
-	<main
-		id="index-section"
-		class="flex-1 flex flex-col min-h-0 w-full opacity-0 transition-opacity duration-1000"
-	>
-		<Hero />
-	</main>
+    <main id="index-section" class="flex-1 flex flex-col min-h-0 w-full">
+        <Hero />
+    </main>
 </Layout>
 
 <script>
-	function initFade() {
-		const img = document.querySelector(
-			'img[alt="App Preview"]',
-		) as HTMLImageElement;
-		const indexSection = document.getElementById("index-section");
-
-		const showPage = () => {
-			if (indexSection) {
-				indexSection.classList.remove("opacity-0");
-			}
-		};
-
-		if (img) {
-			if (img.complete) {
-				showPage();
-			} else {
-				img.addEventListener("load", showPage);
-				// Fallback to show page after 3 seconds anyway
-				setTimeout(showPage, 3000);
-			}
-		} else {
-			showPage();
-		}
-	}
-
-	document.addEventListener("astro:page-load", initFade);
+    // The fade logic is now handled globally in Layout.astro
+    // which waits for the background to fade in first.
 </script>
