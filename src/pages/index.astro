@@ -3,6 +3,30 @@ import Layout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 ---
 
-<Layout title="Fluyer" bodyClass="h-screen flex flex-col">
+<Layout title="Fluyer" bodyClass="h-screen flex flex-col opacity-0 transition-opacity duration-1000">
 	<Hero />
 </Layout>
+
+<script>
+	function initFade() {
+		const img = document.querySelector('img[alt="App Preview"]') as HTMLImageElement;
+		
+		const showPage = () => {
+			document.body.classList.remove('opacity-0');
+		};
+
+		if (img) {
+			if (img.complete) {
+				showPage();
+			} else {
+				img.addEventListener('load', showPage);
+				// Fallback to show page after 3 seconds anyway
+				setTimeout(showPage, 3000);
+			}
+		} else {
+			showPage();
+		}
+	}
+
+	document.addEventListener('astro:page-load', initFade);
+</script>
