@@ -8,14 +8,26 @@ interface Props {
   [key: string]: any;
 }
 
-const { class: className = "", glassShineSize, ...rest } = Astro.props;
+const { class: className = "", glassShineSize, onclick, ...rest } = Astro.props;
+
+const clickScript = `
+	const el = this;
+	el.classList.remove('scale-100');
+	el.classList.add('scale-95');
+	setTimeout(() => {
+		el.classList.remove('scale-95');
+		el.classList.add('scale-100');
+	}, 100);
+	${onclick ? `setTimeout(() => { ${onclick} }, 200);` : ''}
+`;
 ---
 
 <View
-  class={`cursor-pointer scale-100 active:scale-95 transition-transform ${className}`}
-  glassShineSize={glassShineSize}
-  glassEnableHoverEffect={true}
-  {...rest}
+	class={`cursor-pointer scale-100 transition-transform ${className}`}
+	glassShineSize={glassShineSize}
+	glassEnableHoverEffect={true}
+	onclick={clickScript}
+	{...rest}
 >
-  <slot />
+	<slot />
 </View>

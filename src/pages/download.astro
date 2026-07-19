@@ -1,0 +1,92 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Button from "../components/ui/Button.astro";
+import View from "../components/ui/View.astro";
+---
+
+<Layout title="Fluyer - Download">
+		<div class="w-screen h-screen flex flex-col items-center justify-center relative text-white pt-20">
+      <div class="flex flex-col items-center max-w-2xl">
+        
+        <div class="flex flex-wrap justify-center gap-3 mx-3">
+          <Button
+            class="flex items-center gap-2 px-4 py-2 rounded text-sm"
+            glassShineSize="sm"
+          >
+            <img
+              class="w-4 invert"
+              src="https://img.icons8.com/ios-filled/50/windows-11.png"
+            /> Windows
+          </Button>
+          <Button
+            class="flex items-center gap-2 px-4 py-2 rounded text-sm"
+            glassShineSize="sm"
+          >
+            <img
+              class="w-4 invert"
+              src="https://img.icons8.com/ios-filled/50/mac-os.png"
+            /> macOS
+          </Button>
+          <Button
+            class="flex items-center gap-2 px-4 py-2 rounded text-sm"
+            glassShineSize="sm"
+          >
+            <img
+              class="w-4 invert"
+              src="https://img.icons8.com/ios-filled/50/android-os.png"
+            /> Android
+          </Button>
+          <Button
+            class="flex items-center gap-2 px-4 py-2 rounded text-sm"
+            glassShineSize="sm"
+          >
+            <img
+              class="w-4 invert"
+              src="https://img.icons8.com/ios-filled/50/debian.png"
+            /> Debian
+          </Button>
+          <Button
+            id="arch-toggle"
+            class="flex items-center gap-2 px-4 py-2 rounded text-sm"
+            glassShineSize="sm"
+          >
+            <img
+              class="w-4 invert"
+              src="https://img.icons8.com/material/96/arch-linux.png"
+            /> Arch Linux
+          </Button>
+        </div>
+
+        <section
+          id="arch-docs"
+          class="w-full hidden mt-6 rounded-xl text-left max-w-md px-3"
+        >
+          <div>
+            <p class="text-sm text-white/90 mb-2">
+              If you have yay installed, install from AUR:
+            </p>
+            <View
+              class="p-3 rounded-lg text-sm font-mono mb-4 overflow-x-auto scrollbar-hidden"
+              ><pre><code>yay -S fluyer</code></pre></View
+            >
+
+            <p class="text-sm text-white/90 mb-2">
+              If you don't have yay installed:
+            </p>
+            <View
+              class="p-3 rounded-lg text-sm font-mono overflow-x-auto scrollbar-hidden"
+              ><pre><code>git clone https://aur.archlinux.org/fluyer.git
+cd fluyer
+makepkg -si</code></pre></View
+            >
+          </div>
+        </section>
+      </div>
+		</div>
+
+    <script>
+      const btn = document.getElementById("arch-toggle");
+      const docs = document.getElementById("arch-docs");
+      btn?.addEventListener("click", () => docs?.classList.toggle("hidden"));
+    </script>
+</Layout>

@@ -1,123 +1,52 @@
 ---
 import { Image, getImage } from "astro:assets";
-import appIcon from "../assets/icon.png";
 import heroImg from "../assets/previews/hero.png";
-import heroMobileImg from "../assets/previews/hero-mobile.jpg";
-import Button from "./ui/Button.astro";
+import heroMobileImg from "../assets/previews/hero-mobile.png";
 import View from "./ui/View.astro";
+import Button from "./ui/Button.astro";
 
-// const optimizedDesktop = await getImage({ src: heroImg, format: 'webp' });
-// const optimizedMobile = await getImage({ src: heroMobileImg, format: 'webp' });
+const optimizedDesktop = await getImage({ src: heroImg, format: "webp" });
+const optimizedMobile = await getImage({ src: heroMobileImg, format: "webp" });
 ---
 
-<div class="w-screen h-screen flex items-center justify-center">
-  <section
-    class="flex flex-col items-center text-center lg:max-w-6xl mx-auto text-white"
+<div class="w-full flex-1 relative flex flex-col px-6 pb-6 min-h-0">
+  <div
+    class="flex-1 min-h-0 w-full flex items-center justify-center md:my-3 lg:my-6 md:mt-0"
   >
-    <div class="flex flex-col items-center max-w-2xl">
-      <div class="flex items-center gap-4 mb-6">
-        <Image
-          src={appIcon}
-          alt="App Icon"
-          class="w-16 h-16 rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
+    <View
+      class="p-1 md:p-3 rounded-lg flex justify-center items-center w-fit h-full sm:h-fit lg:h-full lg:w-full lg:max-w-fit"
+    >
+      <picture class="flex justify-center items-center h-full w-full">
+        <source media="(max-width: 639px)" srcset={optimizedMobile.src} />
+        <source media="(min-width: 640px)" srcset={optimizedDesktop.src} />
+        <img
+          src={optimizedDesktop.src}
+          alt="App Preview"
+          class="object-contain w-full h-full"
         />
-        <h1 class="text-5xl font-semibold m-0">Fluyer</h1>
-      </div>
+      </picture>
+    </View>
+  </div>
 
-      <p class="md:text-lg leading-relaxed text-white mb-3 px-4 md:px-0">
-        A music player capable of playing high-quality music, having a beautiful
-        interface, support on various devices, while keeping the performance <i
+  <div
+    class="flex flex-col md:flex-row md:items-end justify-between gap-6 z-10 shrink-0 w-full"
+  >
+    <div class="max-w-2xl text-left">
+      <p class="leading-relaxed my-3">
+        A <b>music player</b> capable of playing high-quality music, having beautiful
+        interface, support on various devices, while keeping performance <i
           >decently</i
         > optimized.
       </p>
 
-      <p class="text-sm leading-relaxed text-white/90 mb-3">
+      <p class="text-sm leading-relaxed text-white/80">
         It's not perfect but it's pretty good, you know? :)
       </p>
-
-      <div class="flex flex-wrap justify-center gap-3 w-full px-3 md:px-0">
-        <Button
-          class="flex items-center gap-2 px-4 py-2 rounded text-sm"
-          glassShineSize="sm"
-        >
-          <img
-            class="w-4 invert"
-            src="https://img.icons8.com/ios-filled/50/windows-11.png"
-          /> Windows
-        </Button>
-        <Button
-          class="flex items-center gap-2 px-4 py-2 rounded text-sm"
-          glassShineSize="sm"
-        >
-          <img
-            class="w-4 invert"
-            src="https://img.icons8.com/ios-filled/50/mac-os.png"
-          /> macOS
-        </Button>
-        <Button
-          class="flex items-center gap-2 px-4 py-2 rounded text-sm"
-          glassShineSize="sm"
-        >
-          <img
-            class="w-4 invert"
-            src="https://img.icons8.com/ios-filled/50/android-os.png"
-          /> Android
-        </Button>
-        <Button
-          class="flex items-center gap-2 px-4 py-2 rounded text-sm"
-          glassShineSize="sm"
-        >
-          <img
-            class="w-4 invert"
-            src="https://img.icons8.com/ios-filled/50/debian.png"
-          /> Debian
-        </Button>
-        <Button
-          id="arch-toggle"
-          class="flex items-center gap-2 px-4 py-2 rounded text-sm"
-          glassShineSize="sm"
-        >
-          <img
-            class="w-4 invert"
-            src="https://img.icons8.com/material/96/arch-linux.png"
-          /> Arch Linux
-        </Button>
-      </div>
-
-      <section
-        id="arch-docs"
-        class="hidden mt-6 p-5 rounded-xl text-left w-full max-w-md"
-      >
-        <p class="text-sm text-white/90 mb-2">
-          If you have yay installed, install from AUR:
-        </p>
-        <View class="p-3 rounded-lg text-sm font-mono mb-4 overflow-x-auto"
-          ><pre><code>yay -S fluyer</code></pre></View
-        >
-
-        <p class="text-sm text-white/90 mb-2">
-          If you don't have yay installed:
-        </p>
-        <View class="p-3 rounded-lg text-sm font-mono overflow-x-auto"
-          ><pre><code>git clone https://aur.archlinux.org/fluyer.git
-cd fluyer
-makepkg -si</code></pre></View
-        >
-      </section>
     </div>
 
-    <!-- <div class="mt-16 w-full max-w-5xl">
-    <picture>
-      <source media="(max-width: 768px)" srcset={optimizedMobile.src} />
-      <source media="(min-width: 769px)" srcset={optimizedDesktop.src} />
-      <img src={optimizedDesktop.src} alt="App Preview" class="w-full h-auto rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] block" />
-    </picture>
-  </div> -->
-  </section>
+    <Button
+      class="rounded-full px-3 py-2 md:px-4 md:py-3 font-semibold text-center md:text-lg md:shrink-0"
+      >Get Started</Button
+    >
+  </div>
 </div>
-
-<script>
-  const btn = document.getElementById("arch-toggle");
-  const docs = document.getElementById("arch-docs");
-  btn?.addEventListener("click", () => docs?.classList.toggle("hidden"));
-</script>

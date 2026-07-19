@@ -2,17 +2,25 @@
 // src/components/AnimatedBackground.astro
 ---
 
-<canvas id="animated-bg" class="fixed inset-0 w-screen h-screen -z-10 pointer-events-none object-cover"></canvas>
+<canvas
+  id="animated-bg"
+  class="fixed inset-0 w-screen h-screen -z-10 pointer-events-none object-cover"
+></canvas>
 
 <style>
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 </style>
 
 <script>
   import * as StackBlur from "stackblur-canvas";
+  import convert from "color-convert";
 
   const SCALE = 0.05;
   const CANVAS_BLOCK_SIZE = 200;
@@ -32,7 +40,10 @@
   ];
 
   function getRandomColor() {
-    return PALETTE[Math.floor(Math.random() * PALETTE.length)];
+    let color = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+
+    let hslColor = convert.rgb.hsl(color[0], color[1], color[2]);
+    return convert.hsl.rgb(hslColor);
   }
 
   const canvas = document.getElementById("animated-bg") as HTMLCanvasElement;
