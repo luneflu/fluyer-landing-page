@@ -242,9 +242,9 @@ makepkg -si</code></pre>
     }
   </style>
 
-  <script is:inline src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"
-  ></script>
   <script>
+    import { marked } from "marked";
+
     document.addEventListener("astro:page-load", () => {
       const btns = document.querySelectorAll(".os-btn");
       const sections = document.querySelectorAll(".os-section");
@@ -335,16 +335,14 @@ makepkg -si</code></pre>
       const dlBtns = document.querySelectorAll(".dl-btn");
 
       if (versionSelect) {
-        versionSelect.addEventListener("change", (e: any) => {
+        versionSelect.addEventListener("change", async (e: any) => {
           const selectedValue = e.detail.value;
           const release = releasesData.find(
             (r) => r.tag_name === selectedValue,
           );
 
           if (release && release.body && changelogContainer) {
-            changelogContainer.innerHTML = (window as any).marked.parse(
-              release.body,
-            );
+            changelogContainer.innerHTML = await marked.parse(release.body);
             changelogContainer.classList.remove("hidden");
           } else if (changelogContainer) {
             changelogContainer.innerHTML = "<p>No changelog available.</p>";
