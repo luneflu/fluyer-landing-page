@@ -3,13 +3,21 @@ import "../styles/global.css";
 import AnimatedBackground from "../components/AnimatedBackground.astro";
 import Navbar from "../components/Navbar.astro";
 import { ClientRouter } from "astro:transitions";
+import heroImg from "../assets/previews/hero.png";
 
 interface Props {
   title: string;
   bodyClass?: string;
+  description?: string;
+  image?: string;
 }
 
-const { title, bodyClass } = Astro.props;
+const { 
+  title, 
+  bodyClass, 
+  description = "A music player capable of playing high-quality music, having beautiful interface, support on various devices, while keeping performance decently optimized.", 
+  image = heroImg.src 
+} = Astro.props;
 ---
 
 <html lang="en" class="scrollbar-hidden">
@@ -20,6 +28,22 @@ const { title, bodyClass } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.url)} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={Astro.url} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
     <ClientRouter />
   </head>
   <body class={(bodyClass || "") + " text-white scrollbar-hidden"}>
