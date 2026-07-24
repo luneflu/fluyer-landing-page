@@ -9,12 +9,15 @@ const optimizedDesktop = await getImage({ src: heroImg, format: "webp" });
 const optimizedMobile = await getImage({ src: heroMobileImg, format: "webp" });
 ---
 
-<div class="w-full flex-1 relative flex flex-col px-6 pb-6 min-h-0">
+<div
+  class="w-full flex flex-col px-6 md:pb-12"
+  style="height: calc(100vh - 80px);"
+>
   <div
     class="flex-1 min-h-0 w-full flex items-center justify-center md:my-3 lg:my-6 md:mt-0"
   >
     <View
-      class="p-1 md:p-3 rounded-lg flex justify-center items-center w-fit h-full sm:h-fit lg:h-full lg:w-full lg:max-w-fit"
+      class="p-1 md:p-3 rounded-lg flex justify-center items-center overflow-hidden h-full"
     >
       <picture class="flex justify-center items-center h-full w-full">
         <source media="(max-width: 639px)" srcset={optimizedMobile.src} />

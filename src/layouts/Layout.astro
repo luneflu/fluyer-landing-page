@@ -32,8 +32,6 @@ const { title, bodyClass } = Astro.props;
       <slot />
     </div>
     <script>
-      import { navigate } from "astro:transitions/client";
-
       function initPageFade() {
         const pageContent = document.getElementById("page-content");
         const canvas = document.getElementById("animated-bg");
@@ -56,109 +54,8 @@ const { title, bodyClass } = Astro.props;
         }
       }
 
-      function initScrollNavigation() {
-        const pages = ["/", "/features", "/download"];
-        const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
-        const currentIndex = pages.indexOf(currentPath);
-
-        let isNavigating = false;
-        let scrollAccumulator = 0;
-        
-        // Settings for navigation feel
-        const SCROLL_THRESHOLD = 150; // How "strong" the scroll needs to be (pixels)
-        const NAV_COOLDOWN_MS = 1000; // Cooldown after page load before scroll nav works
-        const DECAY_FACTOR = 0.9;     // How fast the accumulator decays (0.0 to 1.0)
-        
-        let canNavigate = false;
-        let decayInterval: ReturnType<typeof setInterval>;
-
-        // Cooldown timer: Prevent immediate navigation on page load
-        setTimeout(() => {
-          canNavigate = true;
-          
-          // Gradually reduce scroll accumulation over time
-          decayInterval = setInterval(() => {
-            scrollAccumulator *= DECAY_FACTOR;
-            if (Math.abs(scrollAccumulator) < 1) {
-              scrollAccumulator = 0;
-            }
-          }, 50); // Run every 50ms
-        }, NAV_COOLDOWN_MS);
-
-        let touchStartY = 0;
-        const SWIPE_THRESHOLD = 80;
-
-        function navigateTo(index: number) {
-          if (isNavigating || !canNavigate || index < 0 || index >= pages.length) return;
-          isNavigating = true;
-          canNavigate = false; // Prevent further navigations immediately
-          clearInterval(decayInterval); // Stop decay
-          navigate(pages[index]);
-        }
-
-        function handleWheel(e: WheelEvent) {
-          if (isNavigating || !canNavigate) return;
-
-          const isAtTop = window.scrollY <= 0;
-          // Use a small 1px tolerance for bottom detection to handle sub-pixel rendering issues
-          const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 1;
-
-          // Only accumulate if we are scrolling past the boundaries
-          if (e.deltaY > 0 && isAtBottom) {
-            // Scrolling down at the bottom
-            scrollAccumulator += e.deltaY;
-            if (scrollAccumulator > SCROLL_THRESHOLD) {
-              navigateTo(currentIndex + 1);
-            }
-          } else if (e.deltaY < 0 && isAtTop) {
-            // Scrolling up at the top
-            scrollAccumulator += Math.abs(e.deltaY);
-            if (scrollAccumulator > SCROLL_THRESHOLD) {
-              navigateTo(currentIndex - 1);
-            }
-          }
-        }
-
-        function handleTouchStart(e: TouchEvent) {
-          touchStartY = e.touches[0].clientY;
-        }
-
-        function handleTouchEnd(e: TouchEvent) {
-          if (isNavigating || !canNavigate) return;
-          
-          const touchEndY = e.changedTouches[0].clientY;
-          const deltaY = touchStartY - touchEndY; // Positive is swipe up (scroll down)
-
-          const isAtTop = window.scrollY <= 0;
-          const isAtBottom = Math.ceil(window.scrollY + window.innerHeight) >= document.documentElement.scrollHeight - 1;
-
-          if (deltaY > SWIPE_THRESHOLD && isAtBottom) {
-            // Swipe up (scroll down) at the bottom
-            navigateTo(currentIndex + 1);
-          } else if (deltaY < -SWIPE_THRESHOLD && isAtTop) {
-            // Swipe down (scroll up) at the top
-            navigateTo(currentIndex - 1);
-          }
-        }
-
-        // Add event listeners (clean up existing ones if Astro View Transitions re-runs this)
-        window.removeEventListener("wheel", handleWheel);
-        window.removeEventListener("touchstart", handleTouchStart);
-        window.removeEventListener("touchend", handleTouchEnd);
-
-        // Make sure to clean up intervals on navigate
-        document.addEventListener("astro:before-preparation", () => {
-          if (decayInterval) clearInterval(decayInterval);
-        }, { once: true });
-
-        window.addEventListener("wheel", handleWheel, { passive: false });
-        window.addEventListener("touchstart", handleTouchStart, { passive: true });
-        window.addEventListener("touchend", handleTouchEnd, { passive: true });
-      }
-
       document.addEventListener("astro:page-load", () => {
         initPageFade();
-        initScrollNavigation();
       });
     </script>
   </body>
