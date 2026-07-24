@@ -34,11 +34,15 @@ const { title, bodyClass } = Astro.props;
     <script>
       function initPageFade() {
         const pageContent = document.getElementById("page-content");
+        const navbar = document.getElementById("navbar");
         const canvas = document.getElementById("animated-bg");
 
         const showPage = () => {
           if (pageContent) {
             pageContent.classList.remove("opacity-0");
+          }
+          if (navbar) {
+            navbar.classList.remove("opacity-0");
           }
         };
 
