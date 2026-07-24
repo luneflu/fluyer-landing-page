@@ -100,6 +100,37 @@ import DownloadSimple from "phosphor-astro/DownloadSimple.astro";
         <p class="text-xs text-center text-white/70 mt-1">
           macOS Catalina (10.15) or later
         </p>
+
+        <View class="rounded-lg p-3 text-sm">
+          <p>
+            <span class="font-semibold">Warning!</span> App is not notarized due to
+            Apple Developer fees.
+          </p>
+          <p>
+            macOS will warn that Fluyer "cannot be verified." This is expected
+            and harmless.
+          </p>
+
+          <p class="font-semibold mt-2 mb-1">macOS 14 (Sonoma) and below:</p>
+          <ul class="list-disc pl-5 mb-3 space-y-1 text-white/90">
+            <li>Right-click Fluyer.app</li>
+            <li>Select Open</li>
+            <li>Confirm again in dialog</li>
+          </ul>
+
+          <p class="font-semibold mb-1">macOS 15 (Sequoia) and above:</p>
+          <ul class="list-disc pl-5 space-y-1 text-white/90">
+            <li>Open the app and it will be blocked</li>
+            <li>
+              Go to <span class="font-semibold"
+                >System Settings &gt; Privacy &amp; Security</span
+              >
+            </li>
+            <li>Scroll down and click Open Anyway</li>
+            <li>Confirm and authenticate</li>
+            <li>Open again from Applications</li>
+          </ul>
+        </View>
       </section>
 
       <section
