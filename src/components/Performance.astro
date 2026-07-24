@@ -1,0 +1,151 @@
+---
+import { Image } from "astro:assets";
+import View from "./ui/View.astro";
+import Button from "./ui/Button.astro";
+
+import windowsImg from "../assets/performance/windows.jpeg";
+import macosImg from "../assets/performance/macos.png";
+import linuxImg from "../assets/performance/linux.png";
+---
+
+<section id="performance-section" class="w-full max-w-5xl mx-auto px-6 py-10">
+    <header class="mb-10 md:mb-14 text-center">
+        <h2 class="font-bold text-3xl mb-3">Performance</h2>
+        <div class="text-base max-w-2xl mx-auto leading-relaxed">
+            <p>
+                Our app is based on <a
+                    class="font-semibold underline"
+                    href="https://v2.tauri.app">Tauri</a
+                > which uses Webview to render it's user interface. But don't worry
+                because we already tried our best to optimize the app.
+            </p>
+            <p class="mt-2">
+                Most people concern are the RAM usage and as you can see, the
+                app RAM usage were around <span class="font-semibold"
+                    >250-300 MB</span
+                > across different OS-es which is pretty decent, no?
+            </p>
+        </div>
+    </header>
+
+    <div class="flex flex-col items-center gap-8">
+        <div class="flex flex-wrap gap-4 justify-center">
+            <Button
+                id="btn-windows"
+                class="os-btn px-6 py-3 rounded-xl bg-white/4 text-white/70 font-medium transition-colors border-transparent border hover:bg-white/10 hover:text-white"
+                data-os="windows"
+            >
+                Windows 10
+            </Button>
+            <Button
+                id="btn-macos"
+                class="os-btn px-6 py-3 rounded-xl bg-white/4 text-white/70 font-medium transition-colors border-transparent border hover:bg-white/10 hover:text-white"
+                data-os="macos"
+            >
+                macOS 15 Sequoia
+            </Button>
+            <Button
+                id="btn-linux"
+                class="os-btn px-6 py-3 rounded-xl bg-white/4 text-white/70 font-medium transition-colors border-transparent border hover:bg-white/10 hover:text-white"
+                data-os="linux"
+            >
+                Linux Mint 22.3
+            </Button>
+        </div>
+
+        <View
+            class="w-full rounded-2xl overflow-hidden border border-white/10 bg-white/4 p-2 md:p-4 shadow-2xl"
+        >
+            <div id="img-windows" class="os-image-container hidden">
+                <Image
+                    src={windowsImg}
+                    alt="Windows Performance"
+                    class="w-full h-auto rounded-xl border border-white/10"
+                />
+            </div>
+            <div id="img-macos" class="os-image-container hidden">
+                <Image
+                    src={macosImg}
+                    alt="macOS Performance"
+                    class="w-full h-auto rounded-xl border border-white/10"
+                />
+            </div>
+            <div id="img-linux" class="os-image-container hidden">
+                <Image
+                    src={linuxImg}
+                    alt="Linux Performance"
+                    class="w-full h-auto rounded-xl border border-white/10"
+                />
+            </div>
+        </View>
+    </div>
+</section>
+
+<script>
+    const buttons = document.querySelectorAll(".os-btn");
+    const images = document.querySelectorAll(".os-image-container");
+
+    const updateUI = (targetOs: string) => {
+        // Update buttons
+        buttons.forEach((btn) => {
+            if (btn.getAttribute("data-os") === targetOs) {
+                btn.classList.add(
+                    "bg-white/10",
+                    "text-white",
+                    "border-white/20",
+                );
+                btn.classList.remove(
+                    "bg-white/4",
+                    "text-white/70",
+                    "border-transparent",
+                    "hover:bg-white/10",
+                    "hover:text-white",
+                );
+            } else {
+                btn.classList.remove(
+                    "bg-white/10",
+                    "text-white",
+                    "border-white/20",
+                );
+                btn.classList.add(
+                    "bg-white/4",
+                    "text-white/70",
+                    "border-transparent",
+                    "hover:bg-white/10",
+                    "hover:text-white",
+                );
+            }
+        });
+
+        // Update images
+        images.forEach((img) => {
+            if (img.id === `img-${targetOs}`) {
+                img.classList.remove("hidden");
+                img.classList.add("block");
+            } else {
+                img.classList.remove("block");
+                img.classList.add("hidden");
+            }
+        });
+    };
+
+    buttons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+            const targetOs = (e.currentTarget as HTMLElement).getAttribute(
+                "data-os",
+            );
+            if (targetOs) updateUI(targetOs);
+        });
+    });
+
+    // Detect OS and set default
+    const getOS = () => {
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        if (userAgent.indexOf("win") !== -1) return "windows";
+        if (userAgent.indexOf("linux") !== -1) return "linux";
+        return "macos"; // fallback
+    };
+
+    // Initialize UI on load
+    updateUI(getOS());
+</script>
