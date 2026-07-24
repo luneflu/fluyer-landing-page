@@ -183,12 +183,24 @@ import DownloadSimple from "phosphor-astro/DownloadSimple.astro";
         <Button
           class="flex px-6 py-3 rounded-lg text-sm w-full items-center dl-btn"
           glassShineSize="sm"
-          data-dl-pattern="amd64.deb$"
+          data-dl-pattern="^(?!.*cef).*\.deb$"
           ><DownloadSimple class="w-6 h-6" />
           <span class="ms-2">Debian</span></Button
         >
         <p class="text-xs text-center text-white/70 mt-1">
           Requires webkit2gtk
+        </p>
+        <Button
+          class="flex px-6 py-3 rounded-lg text-sm w-full items-center dl-btn mt-2"
+          glassShineSize="sm"
+          data-dl-pattern="cef.*amd64\.deb$"
+          ><DownloadSimple class="w-6 h-6" />
+          <span class="ms-2">Debian (Chromium) (Experimental)</span></Button
+        >
+        <p class="text-xs text-center text-white/70 mt-1">
+          If you are an Nvidia users and have graphical issues with app, you can
+          try experimental version which uses Chromium. Performance will stays
+          same.
         </p>
       </section>
 
